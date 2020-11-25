@@ -36,6 +36,13 @@ def compute():
 def get_image():
     s3 = boto3.client('s3', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
     s3.download_file('deep-learning-inference', 'download.jfif', 'test.jfif')
+    n = 99173
+    isPrime = True
+    if n <= 1 or n % 1 > 0:
+        isPrime = False
+    for i in range(2, n // 2):
+        if n % i == 0:
+            isPrime = False
     return send_file('test.jfif', mimetype='image/jfif')
 
 
