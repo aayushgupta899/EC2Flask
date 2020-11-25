@@ -1,9 +1,13 @@
 from flask import Flask
+from flask import send_file
+import boto3
 import json
 import time
 
 app = Flask(__name__)
 
+AWS_ACCESS_KEY_ID = ''
+AWS_SECRET_ACCESS_KEY = ''
 
 @app.route('/')
 def hello():
@@ -28,5 +32,12 @@ def compute():
     }
 
 
+@app.route('/get_image')
+def get_image():
+    s3 = boto3.client('s3', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
+    s3.download_file('deep-learning-inference', 'download.jfif', 'test.jfif')
+    return send_file('test.jfif', mimetype='image/jfif')
+
+
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0', port='5000')
